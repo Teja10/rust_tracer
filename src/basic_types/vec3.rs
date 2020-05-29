@@ -8,7 +8,7 @@ pub struct Vec3 {
 }
 
 pub trait Vec3Traits {
-    fn new(x: f64, y: f64, z:f64) -> Self;
+    fn new(tup: (f64, f64, f64)) -> Self;
     fn length_squared(&self) -> f64;
     fn length(&self) -> f64;
 
@@ -18,7 +18,8 @@ pub trait Vec3Traits {
 }
         
 impl Vec3Traits for Vec3 {
-    fn new(x: f64, y: f64, z:f64) -> Vec3 {
+    fn new(tup: (f64, f64, f64)) -> Vec3 {
+        let (x,y,z) = tup;
         Vec3{x, y, z}
     }
 
@@ -35,9 +36,9 @@ impl Vec3Traits for Vec3 {
     }
 
     fn cross(&self, other: Vec3) -> Vec3 {
-        Vec3::new(self.y * other.z - self.z * other.y,
+        Vec3::new((self.y * other.z - self.z * other.y,
             self.z * other.x - self.x * other.z,
-            self.x * other.y - self.y * other.x)
+            self.x * other.y - self.y * other.x))
     }
 
     fn unitize(&self) -> Vec3 {
@@ -96,9 +97,9 @@ impl ops::Add<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn add(self, other: Vec3) -> Self::Output {
-        Vec3::new(self.x + other.x, 
+        Vec3::new((self.x + other.x, 
             self.y + other.y, 
-            self.z + other.z)
+            self.z + other.z))
     }
 }
 
@@ -106,9 +107,9 @@ impl ops::Sub<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn sub(self, _rhs: Vec3) -> Self::Output {
-        Vec3::new(self.x - _rhs.x,
+        Vec3::new((self.x - _rhs.x,
             self.y - _rhs.y,
-            self.z - _rhs.z)
+            self.z - _rhs.z))
     }
 }
 
@@ -116,7 +117,9 @@ impl ops::Mul<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn mul(self, other: Vec3) -> Self::Output {
-        Vec3::new(self.x * other.x, self.y * other.y, self.z * other.z)
+        Vec3::new((self.x * other.x, 
+            self.y * other.y, 
+            self.z * other.z))
     }
 }
 
@@ -124,7 +127,9 @@ impl ops::Mul<f64> for Vec3 {
     type Output = Vec3;
 
     fn mul(self, num: f64) -> Self::Output {
-        Vec3::new(self.x * num, self.y * num, self.z * num)
+        Vec3::new((self.x * num, 
+            self.y * num, 
+            self.z * num))
     }
 }
 
@@ -132,7 +137,9 @@ impl ops::Mul<Vec3> for f64 {
     type Output = Vec3;
 
     fn mul(self, other: Vec3) -> Self::Output {
-        Vec3::new(self * other.x, self * other.y, self * other.z)
+        Vec3::new((self * other.x, 
+            self * other.y, 
+            self * other.z))
     }
 }
 
