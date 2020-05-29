@@ -9,9 +9,12 @@ pub struct Vec3 {
 
 pub trait Vec3Traits {
     fn new(tup: (f64, f64, f64)) -> Self;
+    fn x(&self) -> f64;
+    fn y(&self) -> f64;
+    fn z(&self) -> f64;
     fn length_squared(&self) -> f64;
     fn length(&self) -> f64;
-
+    
     fn dot(&self, other: Self) -> f64;
     fn cross(&self, other: Self) -> Self;
     fn unitize(&self) -> Self;
@@ -21,6 +24,18 @@ impl Vec3Traits for Vec3 {
     fn new(tup: (f64, f64, f64)) -> Vec3 {
         let (x,y,z) = tup;
         Vec3{x, y, z}
+    }
+
+    fn x(&self) -> f64 {
+        self.x
+    }
+
+    fn y(&self) -> f64 {
+        self.y
+    }
+
+    fn z(&self) -> f64 {
+        self.z
     }
 
     fn length_squared(&self) -> f64 {
@@ -155,6 +170,8 @@ pub trait ColorTraits: Vec3Traits {
     fn write_color(&self) -> String;
 }
 
+pub trait Point3Traits: Vec3Traits {}
+
 pub type Color = Vec3;
 pub type Point3 = Vec3;
 
@@ -166,3 +183,5 @@ impl ColorTraits for Color {
                 (255.99 * self.z) as i32)
     }
 }
+
+impl Point3Traits for Point3{}
