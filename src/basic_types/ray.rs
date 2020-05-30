@@ -1,6 +1,6 @@
 use crate::basic_types::vec3::Vec3;
 use crate::basic_types::vec3::Point3;
-use crate::basic_types::vec3::Vec3Traits;
+
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Ray {
