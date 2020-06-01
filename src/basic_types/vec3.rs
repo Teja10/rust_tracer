@@ -27,6 +27,7 @@ pub trait Vec3Traits {
     fn cross(&self, other: Self) -> Self;
     fn unitize(&self) -> Self;
     fn sqrt(&self) -> Self;
+    fn reflect(&self, n: Vec3) -> Vec3;
 }
         
 impl Vec3Traits for Vec3 {
@@ -106,6 +107,10 @@ impl Vec3Traits for Vec3 {
 
     fn sqrt(&self) -> Self {
         Vec3{x: self.x.sqrt(), y: self.y.sqrt(), z: self.z.sqrt()}
+    }
+
+    fn reflect(&self, n: Vec3) -> Vec3 {
+        *self - 2.0 * self.dot(n) * n
     }
 }
     
