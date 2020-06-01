@@ -62,26 +62,35 @@ fn main() {
     const MAX_DEPTH: i32 = 50;
 
     
-    let mut world: HittableList = HittableList::new();
-    let sp = SphereData::new(Point3::new((0.0, 0.0, -1.0)), 0.5, 
-    Rc::new(Lambertian::new(Color::new((0.1, 0.2, 0.5)))));
-    world.add(Rc::new(sp));
-    let sp = SphereData::new(Point3::new((0.0, -100.5, -1.0)), 100.0,
-        Rc::new(Lambertian::new(Color::new((0.8, 0.8, 0.0)))));
-    world.add(Rc::new(sp));
-    let sp = SphereData::new(Point3::new((1.0, 0.0, -1.0)), 0.5,
-        Rc::new(Metal::new(Color::new((0.8, 0.6, 0.2)), 0.3)));
-    world.add(Rc::new(sp));
-    let sp = SphereData::new(Point3::new((-1.0, 0.0, -1.0)), 0.5,
-        Rc::new(Dielectric::new(1.5)));
-    world.add(Rc::new(sp));
-    let sp = SphereData::new(Point3::new((-1.0, 0.0, 1.0)), -0.45, Rc::new(Dielectric::new(1.5)));
-    world.add(Rc::new(sp));
+    // let mut world: HittableList = HittableList::new();
+    // let sp = SphereData::new(Point3::new((0.0, 0.0, -1.0)), 0.5, 
+    // Rc::new(Lambertian::new(Color::new((0.1, 0.2, 0.5)))));
+    // world.add(Rc::new(sp));
+    // let sp = SphereData::new(Point3::new((0.0, -100.5, -1.0)), 100.0,
+    //     Rc::new(Lambertian::new(Color::new((0.8, 0.8, 0.0)))));
+    // world.add(Rc::new(sp));
+    // let sp = SphereData::new(Point3::new((1.0, 0.0, -1.0)), 0.5,
+    //     Rc::new(Metal::new(Color::new((0.8, 0.6, 0.2)), 0.3)));
+    // world.add(Rc::new(sp));
+    // let sp = SphereData::new(Point3::new((-1.0, 0.0, -1.0)), 0.5,
+    //     Rc::new(Dielectric::new(1.5)));
+    // world.add(Rc::new(sp));
+    // let sp = SphereData::new(Point3::new((-1.0, 0.0, 1.0)), -0.45, Rc::new(Dielectric::new(1.5)));
+    // world.add(Rc::new(sp));
     let mut rng = rand::thread_rng();
 
-    let cam = Camera::new();
+    let cam = Camera::new(Point3::new((-2.0, 2.0, 1.0)), 
+            Point3::new((0.0, 0.0, -1.0)), 
+               Color::new((0.0, 1.0, 0.0)), 90.0, ASPECT_RATIO);
+    
+    let r = (std::f64::consts::PI / 4.0).cos();
+    // let cam = Camera::new(90.0, ASPECT_RATIO);
     let mut s = Screen::empty_screen(IMAGE_WIDTH, IMAGE_HEIGHT);
-
+    let mut world: HittableList = HittableList::new();
+    world.add(Rc::new(SphereData::new(Point3::new((-r, 0.0, -1.0)), r, 
+            Rc::new(Lambertian::new(Color::new((0.0, 0.0, 1.0)))))));
+    world.add(Rc::new(SphereData::new(Point3::new((r, 0.0, -1.0)), r, 
+    Rc::new(Lambertian::new(Color::new((0.0, 1.0, 0.0)))))));
     for j in (0..IMAGE_HEIGHT).rev() {
         eprintln!("Scanlines Remaining: {}", j);
         for i in 0..IMAGE_WIDTH {
