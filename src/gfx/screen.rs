@@ -40,7 +40,7 @@ impl ScreenTraits for Screen {
 
     fn color_pixel(&mut self, x: usize, y: usize, rgb_val: Color, samples_per_pixel: i32) {
         let scale = 1.0 / samples_per_pixel as f64;
-        self.color_array[x][y] = scale * rgb_val;
+        self.color_array[x][y] = (scale * rgb_val).sqrt();
     }
 
     fn write_to_ppm(&self, filename: String) {

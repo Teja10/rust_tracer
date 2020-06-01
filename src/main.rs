@@ -5,6 +5,7 @@ use rand::Rng;
 
 use lib::basic_types::vec3::Color;
 use lib::basic_types::vec3::Point3;
+use lib::basic_types::vec3::Vec3;
 use lib::basic_types::vec3::Vec3Traits;
 
 use lib::basic_types::ray::Ray;
@@ -25,10 +26,14 @@ use lib::gfx::hittable::hittables::sphere::SphereData;
 use lib::gfx::camera::Camera;
 use lib::gfx::camera::CameraTraits;
 
-fn ray_color(r: Ray, world: &HittableList) -> Color {
+fn ray_color(r: Ray, world: &HittableList, depth: i32) -> Color {
+    if depth <= 0 {
+        return Color::new((0.0,0.0,0.0));
+    }
     let mut rec: HitRecord = HitRecord::new();
     if world.hit(r, 0.0, std::f64::INFINITY, &mut rec) {
-        return 0.5 * (rec.normal() + Color::new((1.0,1.0,1.0)))
+        let target = rec.p() + rec.normal() + Vec3::random_in_unit_sphere();
+        return 0.5 * ray_color(Ray::new(rec.p(), target - rec.p()), world, depth - 1)
     }
     // Normalize ray direction 
     let unit_direction = r.direction().unitize();
@@ -43,6 +48,7 @@ fn main() {
     const IMAGE_WIDTH: i32 = 384;
     const IMAGE_HEIGHT: i32 = (IMAGE_WIDTH as f64 / ASPECT_RATIO) as i32;
     const SAMPLES_PER_PIXEL: i32 = 100;
+    const MAX_DEPTH: i32 = 50;
 
     let cam = Camera::new();
     let mut s = Screen::empty_screen(IMAGE_WIDTH, IMAGE_HEIGHT);
@@ -60,7 +66,7 @@ fn main() {
                 let u = (i as f64 + rng.gen_range(0.0, 1.0))/ (IMAGE_WIDTH - 1) as f64;
                 let v = (j as f64 + rng.gen_range(0.0, 1.0)) / (IMAGE_HEIGHT - 1) as f64;
                 let r = cam.get_ray(u, v);
-                pixel_color += ray_color(r, &world);
+                pixel_color += ray_color(r, &world, MAX_DEPTH);
             }
             // let u = (i as f64 + rng.gen_range(0.0, 1.0))/ (IMAGE_WIDTH - 1) as f64;
             // let v = (j as f64 + rng.gen_range(0.0, 1.0)) / (IMAGE_HEIGHT - 1) as f64;

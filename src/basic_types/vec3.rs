@@ -1,6 +1,8 @@
 use std::ops;
 use std::fmt;
 use num::clamp;
+use rand::Rng;
+
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vec3 {
     x: f64,
@@ -10,21 +12,50 @@ pub struct Vec3 {
 
 pub trait Vec3Traits {
     fn new(tup: (f64, f64, f64)) -> Self;
+    fn random() -> Self;
+    fn random_from_range(min: f64, max: f64) -> Self;
+    fn random_in_unit_sphere() -> Self;
+
     fn x(&self) -> f64;
     fn y(&self) -> f64;
     fn z(&self) -> f64;
+
     fn length_squared(&self) -> f64;
     fn length(&self) -> f64;
-    
     fn dot(&self, other: Self) -> f64;
     fn cross(&self, other: Self) -> Self;
     fn unitize(&self) -> Self;
+    fn sqrt(&self) -> Self;
 }
         
 impl Vec3Traits for Vec3 {
     fn new(tup: (f64, f64, f64)) -> Vec3 {
         let (x,y,z) = tup;
         Vec3{x, y, z}
+    }
+
+    fn random() -> Self {
+        let mut rng = rand::thread_rng();
+        Vec3{x: rng.gen_range(0.0, 1.0), 
+             y: rng.gen_range(0.0, 1.0), 
+             z: rng.gen_range(0.0, 1.0)}
+    }
+
+    fn random_from_range(min: f64, max: f64) -> Self {
+        let mut rng = rand::thread_rng();
+        Vec3{x: rng.gen_range(min, max),
+             y: rng.gen_range(min, max),
+             z: rng.gen_range(min, max)}
+    }
+
+    fn random_in_unit_sphere() -> Self {
+        loop {
+            let p = Vec3::random_from_range(-1.0, 1.0);
+            if p.length_squared() >= 1.0 {
+                continue;
+            }
+            return p;
+        }   
     }
 
     fn x(&self) -> f64 {
@@ -60,6 +91,10 @@ impl Vec3Traits for Vec3 {
     fn unitize(&self) -> Vec3 {
         let v = *self;
         v / v.length()
+    }
+
+    fn sqrt(&self) -> Self {
+        Vec3{x: self.x.sqrt(), y: self.y.sqrt(), z: self.z.sqrt()}
     }
 }
     
