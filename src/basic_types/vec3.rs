@@ -15,6 +15,7 @@ pub trait Vec3Traits {
     fn random() -> Self;
     fn random_from_range(min: f64, max: f64) -> Self;
     fn random_in_unit_sphere() -> Self;
+    fn random_unit_vector() -> Self;
 
     fn x(&self) -> f64;
     fn y(&self) -> f64;
@@ -56,6 +57,16 @@ impl Vec3Traits for Vec3 {
             }
             return p;
         }   
+    }
+
+    fn random_unit_vector() -> Self {
+        let mut rng = rand::thread_rng();
+        let a = rng.gen_range(0.0, 2.0*std::f64::consts::PI);
+        let z = rng.gen_range(-1.0, 1.0);
+        let r = 1.0 - z*z;
+        Vec3 { x: r * a.cos(),
+             y: r * a.sin(),
+             z }
     }
 
     fn x(&self) -> f64 {
