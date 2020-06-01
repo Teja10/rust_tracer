@@ -26,6 +26,8 @@ use lib::gfx::material::lambertian::Lambertian;
 use lib::gfx::material::lambertian::LambertianFn;
 use lib::gfx::material::metal::Metal;
 use lib::gfx::material::metal::MetalFn;
+use lib::gfx::material::dielectric::Dielectric;
+use lib::gfx::material::dielectric::DielectricFn;
 
 use lib::gfx::camera::Camera;
 use lib::gfx::camera::CameraTraits;
@@ -62,7 +64,7 @@ fn main() {
     
     let mut world: HittableList = HittableList::new();
     let sp = SphereData::new(Point3::new((0.0, 0.0, -1.0)), 0.5, 
-    Rc::new(Lambertian::new(Color::new((0.7, 0.3, 0.3)))));
+    Rc::new(Lambertian::new(Color::new((0.1, 0.2, 0.5)))));
     world.add(Rc::new(sp));
     let sp = SphereData::new(Point3::new((0.0, -100.5, -1.0)), 100.0,
         Rc::new(Lambertian::new(Color::new((0.8, 0.8, 0.0)))));
@@ -71,7 +73,9 @@ fn main() {
         Rc::new(Metal::new(Color::new((0.8, 0.6, 0.2)), 0.3)));
     world.add(Rc::new(sp));
     let sp = SphereData::new(Point3::new((-1.0, 0.0, -1.0)), 0.5,
-        Rc::new(Metal::new(Color::new((0.8, 0.8, 0.8)), 1.0)));
+        Rc::new(Dielectric::new(1.5)));
+    world.add(Rc::new(sp));
+    let sp = SphereData::new(Point3::new((-1.0, 0.0, 1.0)), -0.45, Rc::new(Dielectric::new(1.5)));
     world.add(Rc::new(sp));
     let mut rng = rand::thread_rng();
 

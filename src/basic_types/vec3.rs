@@ -27,7 +27,8 @@ pub trait Vec3Traits {
     fn cross(&self, other: Self) -> Self;
     fn unitize(&self) -> Self;
     fn sqrt(&self) -> Self;
-    fn reflect(&self, n: Vec3) -> Vec3;
+    fn reflect(&self, n: Vec3) -> Self;
+    fn refract(&self, n: Vec3, i_over_t: f64) -> Self;
 }
         
 impl Vec3Traits for Vec3 {
@@ -111,6 +112,13 @@ impl Vec3Traits for Vec3 {
 
     fn reflect(&self, n: Vec3) -> Vec3 {
         *self - 2.0 * self.dot(n) * n
+    }
+
+    fn refract(&self, n: Vec3, i_over_t: f64) -> Self {
+        let cos_theta = -self.dot(n);
+        let r_out_parallel: Vec3 = (*self + cos_theta * n) * i_over_t;
+        let r_out_perp = (1.0 - r_out_parallel.length_squared()).sqrt() * n;
+        r_out_parallel + r_out_perp
     }
 }
     
