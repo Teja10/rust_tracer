@@ -1,5 +1,6 @@
 use std::ops;
 use std::fmt;
+use num::clamp;
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vec3 {
     x: f64,
@@ -178,9 +179,9 @@ pub type Point3 = Vec3;
 impl ColorTraits for Color {
     fn write_color(&self) -> String {
         format!("{} {} {}", 
-                (255.99 * self.x) as i32, 
-                (255.99 * self.y) as i32, 
-                (255.99 * self.z) as i32)
+                (256.0 * clamp(self.x, 0.0, 0.999)) as i32, 
+                (256.0 * clamp(self.y, 0.0, 0.999)) as i32, 
+                (256.0 * clamp(self.z, 0.0, 0.999)) as i32)
     }
 }
 

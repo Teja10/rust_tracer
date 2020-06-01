@@ -56,14 +56,17 @@ fn main() {
     for j in (0..IMAGE_HEIGHT).rev() {
         for i in 0..IMAGE_WIDTH {
             let mut pixel_color = Color::new((0.0,0.0,0.0));
-            for s in 0..SAMPLES_PER_PIXEL {
-                let u = i as f64 / (IMAGE_WIDTH - 1) as f64;
-                let v = j as f64 / (IMAGE_HEIGHT - 1) as f64;
+            for _ in 0..SAMPLES_PER_PIXEL {
+                let u = (i as f64 + rng.gen_range(0.0, 1.0))/ (IMAGE_WIDTH - 1) as f64;
+                let v = (j as f64 + rng.gen_range(0.0, 1.0)) / (IMAGE_HEIGHT - 1) as f64;
+                let r = cam.get_ray(u, v);
+                pixel_color += ray_color(r, &world);
             }
-            
-            let r = cam.get_ray(u, v);
-            let pixel_color = ray_color(r, &world);
-            s.color_pixel(i as usize, j as usize, pixel_color);
+            // let u = (i as f64 + rng.gen_range(0.0, 1.0))/ (IMAGE_WIDTH - 1) as f64;
+            // let v = (j as f64 + rng.gen_range(0.0, 1.0)) / (IMAGE_HEIGHT - 1) as f64;
+            // let r = cam.get_ray(u, v);
+            // let pixel_color = ray_color(r, &world);
+            s.color_pixel(i as usize, j as usize, pixel_color, SAMPLES_PER_PIXEL);
         }
     }
     

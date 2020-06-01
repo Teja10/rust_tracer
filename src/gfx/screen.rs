@@ -15,7 +15,7 @@ pub struct Screen {
 pub trait ScreenTraits {
     fn new(color_array: Vec<Vec<Color>>, image_width: i32, image_height: i32) -> Self;
     fn empty_screen(image_width: i32, image_height: i32) -> Self;
-    fn color_pixel(&mut self, x: usize, y: usize, rgb_val: Color);
+    fn color_pixel(&mut self, x: usize, y: usize, rgb_val: Color, samples_per_pixel: i32);
     fn write_to_ppm(&self, filename: String);
 }
 
@@ -38,9 +38,9 @@ impl ScreenTraits for Screen {
 
     }
 
-    fn color_pixel(&mut self, x: usize, y: usize, rgb_val: Color) {
-
-        self.color_array[x][y] = rgb_val;
+    fn color_pixel(&mut self, x: usize, y: usize, rgb_val: Color, samples_per_pixel: i32) {
+        let scale = 1.0 / samples_per_pixel as f64;
+        self.color_array[x][y] = scale * rgb_val;
     }
 
     fn write_to_ppm(&self, filename: String) {
