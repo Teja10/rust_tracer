@@ -31,7 +31,7 @@ fn ray_color(r: Ray, world: &HittableList, depth: i32) -> Color {
         return Color::new((0.0,0.0,0.0));
     }
     let mut rec: HitRecord = HitRecord::new();
-    if world.hit(r, 0.0, std::f64::INFINITY, &mut rec) {
+    if world.hit(r, 0.001, std::f64::INFINITY, &mut rec) {
         let target = rec.p() + rec.normal() + Vec3::random_in_unit_sphere();
         return 0.5 * ray_color(Ray::new(rec.p(), target - rec.p()), world, depth - 1)
     }
