@@ -39,7 +39,7 @@ impl Hittable for HittableList {
     fn hit(&self, r: Ray, t_min: f64, t_max: f64) -> (Option<HitRecord>, bool) {
         let mut hit_anything = false;
         let mut closest_so_far = t_max;
-        let mut rec = HitRecord::new(Rc::new(Metal::new(Color::new((0.0,0.0,0.0)))));
+        let mut rec = HitRecord::new(Rc::new(Metal::new(Color::new((0.0,0.0,0.0)), 1.0)));
         for object in &self.objects {
             let (temp_rec, flag) = object.hit(r, t_min, closest_so_far);
             if flag {

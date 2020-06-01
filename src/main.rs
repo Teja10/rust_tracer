@@ -5,7 +5,6 @@ use rand::Rng;
 
 use lib::basic_types::vec3::Color;
 use lib::basic_types::vec3::Point3;
-use lib::basic_types::vec3::Vec3;
 use lib::basic_types::vec3::Vec3Traits;
 
 use lib::basic_types::ray::Ray;
@@ -15,7 +14,7 @@ use lib::basic_types::ray::RayTraits;
 use lib::gfx::screen::Screen;
 use lib::gfx::screen::ScreenTraits;
 
-use lib::gfx::hittable::HitRecord;
+
 use lib::gfx::hittable::HitRecordTraits;
 use lib::gfx::hittable::hittables::Hittable;
 use lib::gfx::hittable::hittables::hittable_list::HittableList;
@@ -69,10 +68,10 @@ fn main() {
         Rc::new(Lambertian::new(Color::new((0.8, 0.8, 0.0)))));
     world.add(Rc::new(sp));
     let sp = SphereData::new(Point3::new((1.0, 0.0, -1.0)), 0.5,
-        Rc::new(Metal::new(Color::new((0.8, 0.6, 0.2)))));
+        Rc::new(Metal::new(Color::new((0.8, 0.6, 0.2)), 0.3)));
     world.add(Rc::new(sp));
     let sp = SphereData::new(Point3::new((-1.0, 0.0, -1.0)), 0.5,
-        Rc::new(Metal::new(Color::new((0.8, 0.8, 0.8)))));
+        Rc::new(Metal::new(Color::new((0.8, 0.8, 0.8)), 1.0)));
     world.add(Rc::new(sp));
     let mut rng = rand::thread_rng();
 
